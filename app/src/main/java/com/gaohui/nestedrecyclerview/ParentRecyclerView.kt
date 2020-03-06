@@ -1,8 +1,8 @@
 package com.gaohui.nestedrecyclerview
 
 import android.content.Context
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -13,7 +13,7 @@ import com.gaohui.nestedrecyclerview.utils.UIUtils
 
 
 class ParentRecyclerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-    RecyclerView(context, attrs, defStyleAttr) {
+    androidx.recyclerview.widget.RecyclerView(context, attrs, defStyleAttr) {
 
     private var mMaxDistance:Int = 0
 
@@ -37,15 +37,15 @@ class ParentRecyclerView @JvmOverloads constructor(context: Context, attrs: Attr
         mMaxDistance = mFlingHelper.getVelocityByDistance((UIUtils.getScreenHeight() * 4).toDouble())
 
         addOnScrollListener(object :OnScrollListener(){
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            override fun onScrollStateChanged(recyclerView: androidx.recyclerview.widget.RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 //如果父RecyclerView fling过程中已经到底部，需要让子RecyclerView滑动神域的fling
-                if(newState == RecyclerView.SCROLL_STATE_IDLE) {
+                if(newState == androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE) {
                     dispatchChildFling()
                 }
             }
 
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if(isStartFling) {
                     totalDy = 0
@@ -73,7 +73,8 @@ class ParentRecyclerView @JvmOverloads constructor(context: Context, attrs: Attr
     }
 
     fun initLayoutManager() {
-        val linearLayoutManager = object :LinearLayoutManager(context) {
+        val linearLayoutManager = object :
+            androidx.recyclerview.widget.LinearLayoutManager(context) {
             override fun scrollVerticallyBy(dy: Int, recycler: Recycler?, state: State?): Int {
                 return try {
                     super.scrollVerticallyBy(dy, recycler, state)
@@ -108,7 +109,7 @@ class ParentRecyclerView @JvmOverloads constructor(context: Context, attrs: Attr
                 return false
             }
         }
-        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        linearLayoutManager.orientation = androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
         layoutManager = linearLayoutManager
     }
 

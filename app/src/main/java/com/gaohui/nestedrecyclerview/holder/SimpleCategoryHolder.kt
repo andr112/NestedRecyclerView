@@ -1,8 +1,8 @@
 package com.gaohui.nestedrecyclerview.holder
 
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.RecyclerView
+import com.google.android.material.tabs.TabLayout
+import androidx.viewpager.widget.ViewPager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import com.gaohui.nestedrecyclerview.CategoryView
@@ -11,10 +11,10 @@ import com.gaohui.nestedrecyclerview.R
 import com.gaohui.nestedrecyclerview.adapter.CategoryPagerAdapter
 import com.gaohui.nestedrecyclerview.bean.CategoryBean
 
-class SimpleCategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class SimpleCategoryViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
     private val mTabLayout: TabLayout = itemView.findViewById(R.id.tabs) as TabLayout
-    private val mViewPager: ViewPager = itemView.findViewById(R.id.viewPager) as ViewPager
+    private val mViewPager: androidx.viewpager.widget.ViewPager = itemView.findViewById(R.id.viewPager) as androidx.viewpager.widget.ViewPager
 
     val viewList = ArrayList<ChildRecyclerView>()
 
@@ -22,7 +22,7 @@ class SimpleCategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVie
 
     init {
 
-        mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+        mViewPager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener{
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
             }

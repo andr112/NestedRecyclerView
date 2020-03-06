@@ -1,6 +1,6 @@
 package com.gaohui.nestedrecyclerview.adapter
 
-import android.support.v4.view.PagerAdapter
+import androidx.viewpager.widget.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
 import com.gaohui.nestedrecyclerview.ChildRecyclerView
@@ -8,7 +8,7 @@ import com.gaohui.nestedrecyclerview.ChildRecyclerView
 class CategoryPagerAdapter(
     private val viewList: ArrayList<ChildRecyclerView>,
     private val tabTitleList: ArrayList<String>
-) : PagerAdapter() {
+) : androidx.viewpager.widget.PagerAdapter() {
     override fun getCount(): Int {
         return viewList.size
     }

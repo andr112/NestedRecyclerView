@@ -1,14 +1,14 @@
 package com.gaohui.nestedrecyclerview
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.MotionEvent
 import com.gaohui.nestedrecyclerview.helper.FlingHelper
 import com.gaohui.nestedrecyclerview.utils.UIUtils
 
 open class ChildRecyclerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-    RecyclerView(context, attrs, defStyleAttr)  {
+    androidx.recyclerview.widget.RecyclerView(context, attrs, defStyleAttr)  {
 
     private val mFlingHelper = FlingHelper(context)
 
@@ -23,13 +23,13 @@ open class ChildRecyclerView @JvmOverloads constructor(context: Context, attrs: 
 
     init {
         mMaxDistance = mFlingHelper.getVelocityByDistance((UIUtils.getScreenHeight() * 4).toDouble())
-        overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        overScrollMode = androidx.recyclerview.widget.RecyclerView.OVER_SCROLL_NEVER
         initScrollListener()
     }
 
     private fun initScrollListener() {
         addOnScrollListener(object :OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if(isStartFling) {
                     totalDy = 0
@@ -38,8 +38,8 @@ open class ChildRecyclerView @JvmOverloads constructor(context: Context, attrs: 
                 totalDy += dy
             }
 
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if(newState == RecyclerView.SCROLL_STATE_IDLE) {
+            override fun onScrollStateChanged(recyclerView: androidx.recyclerview.widget.RecyclerView, newState: Int) {
+                if(newState == androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE) {
                     dispatchParentFling()
                 }
                 super.onScrollStateChanged(recyclerView, newState)

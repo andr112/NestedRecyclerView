@@ -1,6 +1,6 @@
 package com.gaohui.nestedrecyclerview.adapter
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.gaohui.nestedrecyclerview.ChildRecyclerView
@@ -8,7 +8,7 @@ import com.gaohui.nestedrecyclerview.R
 import com.gaohui.nestedrecyclerview.holder.SimpleCategoryViewHolder
 import com.gaohui.nestedrecyclerview.holder.SimpleTextViewHolder
 
-class MultiTypeAdapter(private val dataSet:ArrayList<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MultiTypeAdapter(private val dataSet:ArrayList<Any>) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
 
     companion object {
         private const val  TYPE_TEXT = 0
@@ -25,7 +25,7 @@ class MultiTypeAdapter(private val dataSet:ArrayList<Any>) : RecyclerView.Adapte
         }
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         return if(viewType == TYPE_TEXT) {
             SimpleTextViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.layout_item_text,viewGroup,false))
         } else {
@@ -37,7 +37,7 @@ class MultiTypeAdapter(private val dataSet:ArrayList<Any>) : RecyclerView.Adapte
 
     override fun getItemCount(): Int = dataSet.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, pos: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, pos: Int) {
         if(holder is SimpleTextViewHolder) {
             holder.mTv.text = dataSet[pos] as String
         } else if(holder is SimpleCategoryViewHolder){
@@ -51,6 +51,4 @@ class MultiTypeAdapter(private val dataSet:ArrayList<Any>) : RecyclerView.Adapte
         }
         return null
     }
-
-
 }
