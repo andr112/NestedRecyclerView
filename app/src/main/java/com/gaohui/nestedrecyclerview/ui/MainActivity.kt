@@ -20,16 +20,15 @@ class MainActivity : AppCompatActivity() {
     var lastBackPressedTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        getWindow().getDecorView();
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         parentRecyclerView.initLayoutManager()
-
         initData()
     }
 
     private fun initData() {
-        val multiTypeAdapter = MultiTypeAdapter(mDataList)
+        val multiTypeAdapter = MultiTypeAdapter(this,mDataList)
         for (i in 0..8) {
             mDataList.add("parent item text $i")
         }

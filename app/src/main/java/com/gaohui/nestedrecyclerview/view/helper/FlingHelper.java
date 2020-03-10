@@ -1,4 +1,4 @@
-package com.gaohui.nestedrecyclerview.helper;
+package com.gaohui.nestedrecyclerview.view.helper;
 
 import android.content.Context;
 import android.view.ViewConfiguration;

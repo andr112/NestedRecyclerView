@@ -1,4 +1,4 @@
-package com.gaohui.nestedrecyclerview.utils;
+package com.gaohui.nestedrecyclerview.view.utils;
 
 import android.content.res.Resources;
 import android.util.DisplayMetrics;

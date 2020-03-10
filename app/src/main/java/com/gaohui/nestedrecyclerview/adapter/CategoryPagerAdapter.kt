@@ -1,14 +1,14 @@
 package com.gaohui.nestedrecyclerview.adapter
 
-import androidx.viewpager.widget.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
-import com.gaohui.nestedrecyclerview.ChildRecyclerView
+import androidx.viewpager.widget.PagerAdapter
+import com.gaohui.nestedrecyclerview.view.ChildRecyclerView
 
 class CategoryPagerAdapter(
     private val viewList: ArrayList<ChildRecyclerView>,
     private val tabTitleList: ArrayList<String>
-) : androidx.viewpager.widget.PagerAdapter() {
+) : PagerAdapter() {
     override fun getCount(): Int {
         return viewList.size
     }
@@ -26,8 +26,8 @@ class CategoryPagerAdapter(
         return view
     }
 
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        //container.removeView((View) object);
+    override fun destroyItem(container: ViewGroup, position: Int, obj:  Any) {
+        //container.removeView((View) obj);
     }
 
     override fun getPageTitle(position: Int): CharSequence? {

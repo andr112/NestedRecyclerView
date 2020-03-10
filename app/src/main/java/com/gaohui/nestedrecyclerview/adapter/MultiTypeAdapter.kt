@@ -1,54 +1,45 @@
 package com.gaohui.nestedrecyclerview.adapter
 
-import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import com.gaohui.nestedrecyclerview.ChildRecyclerView
-import com.gaohui.nestedrecyclerview.R
-import com.gaohui.nestedrecyclerview.holder.SimpleCategoryViewHolder
-import com.gaohui.nestedrecyclerview.holder.SimpleTextViewHolder
+import android.content.Context
+import com.gaohui.nestedrecyclerview.AdapterItemView
+import com.gaohui.nestedrecyclerview.view.ChildRecyclerView
+import com.gaohui.nestedrecyclerview.CommonRvAdapter
+import com.gaohui.nestedrecyclerview.bean.CategoryBean
+import com.gaohui.nestedrecyclerview.itemView.SimpleCategoryView
+import com.gaohui.nestedrecyclerview.itemView.SimpleTextView
 
-class MultiTypeAdapter(private val dataSet:ArrayList<Any>) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
+class MultiTypeAdapter(private val context: Context, private val dataSet: ArrayList<Any>) :
+    CommonRvAdapter<Any>(dataSet) {
 
     companion object {
-        private const val  TYPE_TEXT = 0
+        private const val TYPE_TEXT = 0
         private const val TYPE_CATEGORY = 1
     }
 
-    private var mCategoryViewHolder:SimpleCategoryViewHolder? = null
-
-    override fun getItemViewType(position: Int): Int {
-        return if(dataSet[position] is String) {
-            TYPE_TEXT
-        } else {
-            TYPE_CATEGORY
-        }
-    }
-
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
-        return if(viewType == TYPE_TEXT) {
-            SimpleTextViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.layout_item_text,viewGroup,false))
-        } else {
-            val categoryViewHolder = SimpleCategoryViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.layout_item_category,viewGroup,false))
-            mCategoryViewHolder =  categoryViewHolder
-            return categoryViewHolder
-        }
-    }
-
-    override fun getItemCount(): Int = dataSet.size
-
-    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, pos: Int) {
-        if(holder is SimpleTextViewHolder) {
-            holder.mTv.text = dataSet[pos] as String
-        } else if(holder is SimpleCategoryViewHolder){
-            holder.bindData(dataSet[pos])
-        }
-    }
+    private var mCategoryView: SimpleCategoryView? = null
 
     fun getCurrentChildRecyclerView(): ChildRecyclerView? {
-        mCategoryViewHolder?.apply {
-           return this.getCurrentChildRecyclerView()
+        mCategoryView?.apply {
+            return this.getCurrentChildRecyclerView()
         }
         return null
+    }
+
+    override fun createItem(viewType: Int): AdapterItemView<Any> {
+        when (viewType) {
+            TYPE_CATEGORY -> {
+                mCategoryView = SimpleCategoryView(context)
+                return mCategoryView!!
+            }
+            else -> return SimpleTextView(context)
+        }
+    }
+
+    override fun getItemType(item: Any): Int {
+        return if (item is CategoryBean) {
+            TYPE_CATEGORY
+        } else {
+            TYPE_TEXT
+        }
     }
 }

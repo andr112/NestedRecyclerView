@@ -1,4 +1,4 @@
-package com.gaohui.nestedrecyclerview
+package com.gaohui.nestedrecyclerview.view
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -7,47 +7,51 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import com.gaohui.nestedrecyclerview.adapter.MultiTypeAdapter
-import com.gaohui.nestedrecyclerview.helper.FlingHelper
-import com.gaohui.nestedrecyclerview.utils.UIUtils
+import com.gaohui.nestedrecyclerview.view.helper.FlingHelper
+import com.gaohui.nestedrecyclerview.view.utils.UIUtils
 
 
+class ParentRecyclerView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) :
+    RecyclerView(context, attrs, defStyleAttr) {
 
-class ParentRecyclerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-    androidx.recyclerview.widget.RecyclerView(context, attrs, defStyleAttr) {
-
-    private var mMaxDistance:Int = 0
+    private var mMaxDistance: Int = 0
 
     private val mFlingHelper = FlingHelper(context)
     /**
      * 记录上次Event事件的y坐标
      */
-    private var lastY:Float = 0f
+    private var lastY: Float = 0f
 
     var totalDy = 0
     /**
      * 用于判断RecyclerView是否在fling
      */
-    var isStartFling =  false
+    var isStartFling = false
     /**
      * 记录当前滑动的y轴加速度
      */
     private var velocityY: Int = 0
 
     init {
-        mMaxDistance = mFlingHelper.getVelocityByDistance((UIUtils.getScreenHeight() * 4).toDouble())
+        mMaxDistance =
+            mFlingHelper.getVelocityByDistance((UIUtils.getScreenHeight() * 4).toDouble())
 
-        addOnScrollListener(object :OnScrollListener(){
-            override fun onScrollStateChanged(recyclerView: androidx.recyclerview.widget.RecyclerView, newState: Int) {
+        addOnScrollListener(object : OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 //如果父RecyclerView fling过程中已经到底部，需要让子RecyclerView滑动神域的fling
-                if(newState == androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE) {
+                if (newState == SCROLL_STATE_IDLE) {
                     dispatchChildFling()
                 }
             }
 
-            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if(isStartFling) {
+                if (isStartFling) {
                     totalDy = 0
                     isStartFling = false
                 }
@@ -69,7 +73,7 @@ class ParentRecyclerView @JvmOverloads constructor(context: Context, attrs: Attr
     }
 
     private fun childFling(velY: Int) {
-        findNestedScrollingChildRecyclerView()?.fling(0,velY)
+        findNestedScrollingChildRecyclerView()?.fling(0, velY)
     }
 
     fun initLayoutManager() {
@@ -109,18 +113,18 @@ class ParentRecyclerView @JvmOverloads constructor(context: Context, attrs: Attr
                 return false
             }
         }
-        linearLayoutManager.orientation = androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         layoutManager = linearLayoutManager
     }
 
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if(ev != null && ev.action == MotionEvent.ACTION_DOWN) {
+        if (ev != null && ev.action == MotionEvent.ACTION_DOWN) {
             //ACTION_DOWN的时候重置加速度
             velocityY = 0
             stopScroll()
         }
-        if((ev == null || ev.action == MotionEvent.ACTION_MOVE).not()) {
+        if ((ev == null || ev.action == MotionEvent.ACTION_MOVE).not()) {
             //在ACTION_MOVE的情况下，将lastY置为0
             lastY = 0f
         }
@@ -133,16 +137,16 @@ class ParentRecyclerView @JvmOverloads constructor(context: Context, attrs: Attr
     }
 
     override fun onTouchEvent(e: MotionEvent): Boolean {
-        if(lastY == 0f) {
+        if (lastY == 0f) {
             lastY = e.y
         }
-        if(isScrollEnd()) {
+        if (isScrollEnd()) {
             //如果父RecyclerView已经滑动到底部，需要让子RecyclerView滑动剩余的距离
             val childRecyclerView = findNestedScrollingChildRecyclerView()
             childRecyclerView?.run {
                 val deltaY = (lastY - e.y).toInt()
-                if(deltaY != 0) {
-                    scrollBy(0,deltaY)
+                if (deltaY != 0) {
+                    scrollBy(0, deltaY)
                 }
             }
         }
@@ -171,7 +175,7 @@ class ParentRecyclerView @JvmOverloads constructor(context: Context, attrs: Attr
         return !canScrollVertically(1)
     }
 
-    private fun findNestedScrollingChildRecyclerView():ChildRecyclerView? {
+    private fun findNestedScrollingChildRecyclerView(): ChildRecyclerView? {
         (adapter as? MultiTypeAdapter)?.apply {
             return getCurrentChildRecyclerView()
         }
@@ -184,7 +188,7 @@ class ParentRecyclerView @JvmOverloads constructor(context: Context, attrs: Attr
         findNestedScrollingChildRecyclerView()?.scrollToPosition(position)
         postDelayed({
             super.scrollToPosition(position)
-        },50)
+        }, 50)
     }
 
     //----------------------------------------------------------------------------------------------
@@ -200,26 +204,33 @@ class ParentRecyclerView @JvmOverloads constructor(context: Context, attrs: Attr
         //1.当前Parent RecyclerView没有滑动底，且dy> 0 是下滑
         val isParentCanScroll = dy > 0 && isScrollEnd().not()
         //2.当前Child RecyclerView滑到顶部了，且dy < 0,即上滑
-        val isChildCanNotScroll = !(dy >= 0 || childRecyclerView == null || childRecyclerView.isScrollTop().not())
+        val isChildCanNotScroll =
+            !(dy >= 0 || childRecyclerView == null || childRecyclerView.isScrollTop().not())
         //以上两种情况都需要让Parent RecyclerView去scroll，和下面onNestedPreFling机制类似
-        if(isParentCanScroll || isChildCanNotScroll) {
-            scrollBy(0,dy)
+        if (isParentCanScroll || isChildCanNotScroll) {
+            scrollBy(0, dy)
             consumed[1] = dy
         }
     }
 
-    override fun onNestedFling(target: View?, velocityX: Float, velocityY: Float, consumed: Boolean): Boolean {
+    override fun onNestedFling(
+        target: View?,
+        velocityX: Float,
+        velocityY: Float,
+        consumed: Boolean
+    ): Boolean {
         return true
     }
 
     override fun onNestedPreFling(target: View?, velocityX: Float, velocityY: Float): Boolean {
         val childRecyclerView = findNestedScrollingChildRecyclerView()
         val isParentCanFling = velocityY > 0f && isScrollEnd().not()
-        val isChildCanNotFling = !(velocityY >= 0 || childRecyclerView == null || childRecyclerView.isScrollTop().not())
-        if(isParentCanFling.not() && isChildCanNotFling.not()) {
+        val isChildCanNotFling =
+            !(velocityY >= 0 || childRecyclerView == null || childRecyclerView.isScrollTop().not())
+        if (isParentCanFling.not() && isChildCanNotFling.not()) {
             return false
         }
-        fling(0,velocityY.toInt())
+        fling(0, velocityY.toInt())
         return true
     }
 
